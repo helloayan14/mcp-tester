@@ -1,86 +1,54 @@
-# MCP Server Testing App
+# 🚀 MCP Tester  
+**A full-stack application for testing MCP servers, specifically for the Smithery AI app.**  
 
-## Overview
-The **MCP Server Testing App** allows users to verify the connectivity and functionality of an MCP (Model Context Protocol) server by providing an installation code. The application fetches server details from Smithery AI's registry and displays relevant information in a clean UI.
+## 📌 Overview  
+MCP Tester is a full-stack application designed to **test and validate MCP server responses** for the Smithery AI app. It provides an easy-to-use interface for sending requests and analyzing API responses.  
 
-## Features
-- Accepts MCP server installation code as input.
-- Communicates with the Smithery AI registry to verify the server.
-- Displays server details including name, type, and connection methods.
-- Provides meaningful error messages if the installation code is invalid.
-- Built with a **React frontend** and an **Express.js backend**.
+## 🌟 Features  
+✅ **MCP Server Testing** – Send requests and analyze API responses  
+✅ **Error Handling** – Robust error handling with Axios  
+✅ **Optimized API Handling** – Efficient API calls with structured responses  
+✅ **Environment Variables** – Properly managed in both client and server  
+✅ **Deployment Ready** – Backend on **Render**, Frontend on **Vercel**  
 
-## Approach
+## 🛠️ Tech Stack  
+- **Frontend:** Vite + React  
+- **Backend:** Express.js  
+- **API Handling:** Axios  
+- **Deployment:** Vercel (Frontend) & Render (Backend)  
 
-### 1. Understanding the Problem
-The goal was to create an app that allows developers to test MCP servers before integration. The application needed to:
-- Accept an **installation code**.
-- Query the **Smithery AI registry**.
-- Display **relevant details** from the API response.
-- Handle **errors gracefully**.
-- It has the ability to tell alll about the all mcp-server details from the smithery app
+## 🚀 Setup, Installation & Deployment (One Go)  
 
-### 2. Backend Development (Express.js & Node.js)
-- Created an **Express.js backend** to handle requests.
-- Used `axios` to fetch MCP server details from:
-  ```plaintext
-  https://registry.smithery.ai/servers/{installationCode}
-  ```
-- Implemented **error handling** for invalid installation codes or failed API requests.
-- Ensured that the **backend accepts a POST request** with JSON body input.
+```bash
+# 1️⃣ Clone the Repository
+git clone https://github.com/helloayan14/mcp-tester.git
+cd mcp-tester
 
-#### Backend Code (server.js)
-```js
-backend code in the  index.js file
+# 2️⃣ Install frontend dependencies & start the client
+cd mcp-client
+npm install
 
-### 3. Frontend Development (React + Tailwind CSS)
-- Created a **React app** to interact with the backend.
-- Used `useState` to manage input, loading states, and response data.
-- Made an **API call to the backend** when the user enters an installation code.
-- Styled the UI with **Tailwind CSS**.
+# Create .env file inside client/
+VITE_BACKEND_URL=
 
+npm run dev
 
-   
-```
+# 3️⃣ Open a new terminal, go to backend & install dependencies
+cd mcp-server
+npm install
 
-## Installation & Setup
+# Create .env file inside server/
+PORT=
+FRONTEND_URL=
 
-### Backend Setup
-1. Clone the repository:
-   ```sh
-   git clone https://github.com/helloayan14/mcp-tester.git
-   cd mcp-tester/mcp-server
-   ```
-2. Install dependencies:
-   ```sh
-   npm install
-   ```
-3. Start the backend server:
-   ```sh
-   npm run dev
-   ```
+# Start backend server
+npm start
 
-### Frontend Setup
-1. Navigate to the frontend directory:
-   ```sh
-   cd mcp-tester/mcp-client
-   ```
-2. Install dependencies:
-   ```sh
-   npm install
-   ```
-3. Start the frontend:
-   ```sh
-   npm run dev
-   ```
+#start frontend in dev mode
+npm run dev
 
-## Deployment
-- deployed on vercel 
+#deployement
+🔹 Frontend: https://mcp-tester.vercel.app/
+🔹 Backend: https://mcp-tester.onrender.com
 
-## Conclusion
-This project successfully provides a simple and effective way to test MCP servers. By leveraging **React for the frontend** and **Express.js for the backend**, the application ensures seamless communication with Smithery AI’s registry.
-
----
-
-Let me know if you need any modifications! 🚀
 
