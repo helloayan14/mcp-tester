@@ -2,7 +2,7 @@ import express from "express"
 import axios from "axios"
 import * as dotenv from "dotenv"
 import cors from "cors"
-
+import {spawn} from "child_process"
 import WebSocket from 'ws';
 dotenv.config()
 const app = express()
@@ -131,36 +131,28 @@ async function testWebSocketConnection(url, config) {
   });
 }
 
+
+
 async function testStdioConnection(stdioFunction) {
   return new Promise((resolve) => {
     try {
-      // Parse the stdioFunction to extract command and args
-      // CAUTION: This requires careful parsing and validation to avoid security issues
-      const funcString = stdioFunction;
-      let command,args
-      const {commands,argument} = funcString({})
+      // Call the stdio function to get the actual command and args
+      const result = stdioFunction({});
+      const { command, args } = result;
 
-      
-      if (funcString.includes('npx')) {
-        command = commands
-        args = argument
-      } else if (funcString.includes('docker')) {
-        command = commands
-        args = argument
-      } else {
+      if (!command || !args || !Array.isArray(args)) {
         resolve({
           success: false,
-          message: "Unrecognized stdio function",
-          details: stdioFunction
+          message: "Invalid stdioFunction return value",
+          details: result
         });
         return;
       }
-      
-      // Execute command with timeout
+
+      // Execute the command
       const childProcess = spawn(command, args);
       let dataReceived = false;
-      
-      // Set timeout
+
       const timeout = setTimeout(() => {
         childProcess.kill();
         resolve({
@@ -169,8 +161,7 @@ async function testStdioConnection(stdioFunction) {
           details: "Command execution exceeded timeout period"
         });
       }, 5000);
-      
-      // Check for output
+
       childProcess.stdout.on('data', (data) => {
         dataReceived = true;
         clearTimeout(timeout);
@@ -178,11 +169,10 @@ async function testStdioConnection(stdioFunction) {
         resolve({
           success: true,
           message: "Process started successfully",
-          details: `Output received: ${data.toString().substring(0, 100)}...`
+          details: `Output: ${data.toString().substring(0, 100)}...`
         });
       });
-      
-      // Handle errors
+
       childProcess.on('error', (error) => {
         clearTimeout(timeout);
         resolve({
@@ -191,6 +181,7 @@ async function testStdioConnection(stdioFunction) {
           details: error.message
         });
       });
+
     } catch (error) {
       resolve({
         success: false,
@@ -200,6 +191,7 @@ async function testStdioConnection(stdioFunction) {
     }
   });
 }
+
 // Helper function to test HTTP connections
 // async function testHttpConnection(url, config) {
 //   try {
