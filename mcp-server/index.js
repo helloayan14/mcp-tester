@@ -137,16 +137,6 @@ async function testStdioConnection(stdioFunction) {
       // Parse the stdioFunction to extract command and args
       // CAUTION: This requires careful parsing and validation to avoid security issues
       const funcString = stdioFunction;
-<<<<<<< HEAD
-      let command, args;
-      
-      if (funcString.includes('npx')) {
-        command = 'npx';
-        args = ['-y', '@modelcontextprotocol/server-sequential-thinking'];
-      } else if (funcString.includes('docker')) {
-        command = 'docker';
-        args = ['run', '--rm', '-i', 'mcp/sequentialthinking'];
-=======
       let command,args
       const {commands,argument} = funcString({})
 
@@ -157,7 +147,6 @@ async function testStdioConnection(stdioFunction) {
       } else if (funcString.includes('docker')) {
         command = commands
         args = argument
->>>>>>> eac4ae4 (changed ws)
       } else {
         resolve({
           success: false,
