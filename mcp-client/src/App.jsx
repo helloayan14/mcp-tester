@@ -156,21 +156,26 @@ export default function App() {
         </div>
       </>
     )}
-    
-    {/* For stdio connections */}
-    {conn.type === "stdio" && conn.stdioFunction && (
-      <>
-        <p><strong>Command:</strong></p>
-        <pre className="bg-gray-100 p-2 rounded text-sm overflow-auto">
-          {conn.stdioFunction.includes('npx') 
-            ? 'npx -y @modelcontextprotocol/server-sequential-thinking'
-            : 'docker run --rm -i mcp/sequentialthinking'}
-        </pre>
-        <p className="mt-2 text-sm text-gray-600">
-          <i>Note: stdio connections can only be tested by running the command locally</i>
-        </p>
-      </>
-    )}
+{conn.type === "stdio" && conn.stdioFunction && (
+  <>
+    <p><strong>Command:</strong></p>
+    <pre className="bg-gray-100 p-2 rounded text-sm overflow-auto">
+      {(() => {
+        try {
+          const parsedFunc = new Function(`return ${conn.stdioFunction}`)(); // safely parse
+          const { command, args } = parsedFunc({});
+          return `${command} ${args.join(" ")}`;
+        } catch (err) {
+          return "Invalid command";
+        }
+      })()}
+    </pre>
+    <p className="mt-2 text-sm text-gray-600">
+      <i>Note: stdio connections can only be tested by running the command locally</i>
+    </p>
+  </>
+)}
+
 {/* 
 {conn.type === "http" && conn.deploymentUrl && (
       <>
